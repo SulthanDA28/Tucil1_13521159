@@ -1,0 +1,1 @@
+# Tucil_Startegi-Algoritma-1
