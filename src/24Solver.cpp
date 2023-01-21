@@ -552,7 +552,7 @@ int main()
         end = clock();
         double waktu = double(end-start)/double(CLOCKS_PER_SEC);
         cout<<"Time execution="<<fixed<<waktu<<" sec"<<endl;
-        cout<<"Apakah anda ingin memasukkan ke dalam file?(y/n)=";
+        cout<<"Apakah anda ingin memasukkan solusi ke dalam file?(y/n)=";
         char nanya;
         cin>>nanya;
         if(nanya=='y')
