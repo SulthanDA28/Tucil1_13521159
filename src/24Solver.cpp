@@ -548,7 +548,14 @@ int main()
             }
         }
         buang.close();
-        cout<<"Jumlah solusi="<<jml<<endl;
+        if(jml==0)
+        {
+            cout<<"Tidak ada solusi"<<endl;
+        }
+        else
+        {
+            cout<<"Jumlah solusi="<<jml<<endl;
+        }
         end = clock();
         double waktu = double(end-start)/double(CLOCKS_PER_SEC);
         cout<<"Time execution="<<fixed<<waktu<<" sec"<<endl;
@@ -563,6 +570,12 @@ int main()
             ofstream simpanfile(namafile);
             simpanfile<<"Kartu yang dipilih sebagai berikut:"<<endl;
             simpanfile<<a[0]<<" "<<a[1]<<" "<<a[2]<<" "<<a[3]<<endl;
+            if(jml==0)
+            {
+                simpanfile<<"Tidak ada solusi yang tersedia"<<endl;
+            }
+            else
+            {
             simpanfile<<"Berikut "<<jml<<" solusi yang tersedia:"<<endl;
             for (j=0;j<4;j++)
             {
@@ -591,6 +604,7 @@ int main()
             }
             simpanfile.close();
             cout<<"File berhasil disimpan. Game telah berakhir";
+            }
         }
         else if(nanya=='n')
         {
