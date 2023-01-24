@@ -1,5 +1,6 @@
-# Tucil_Startegi-Algoritma-1
-# Tugas Kecil Strategi Algoritma 
+# Tucil_13521159
+## Tugas Kecil Strategi Algoritma
+### Penyelesaian Permainan Kartu 24 dengan Algortima Brute Force 
 <br>
 
  Disusun oleh:
