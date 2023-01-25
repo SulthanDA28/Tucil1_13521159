@@ -1,6 +1,8 @@
 #include<iostream>
 #include<cstring>
 #include<fstream>
+#include<cstdlib>
+#include<bits/stdc++.h>
 using namespace std;
 
 
@@ -17,14 +19,14 @@ bool isSama (double hasil)
     }
 }
 
-void hitung_hitung(double a,int oprt1,double b,int oprt2,double c,int oprt3,double d,bool simpan,int * jmloprs,ofstream * datafile)
+void hitung_hitung(double a,int oprt1,double b,int oprt2,double c,int oprt3,double d,set<string> * nyimpenstr,ofstream * datafile)
 {
     //operator di inisialkan sebagai angka
     //'+' adalah 0
     //'-' adalah 1
     //'*' adalah 2
     //'/' adalah 3
-    char oper1,oper2,oper3;
+    string oper1,oper2,oper3;
     if(oprt1 ==0)
     {
         oper1 = '+';
@@ -354,57 +356,52 @@ void hitung_hitung(double a,int oprt1,double b,int oprt2,double c,int oprt3,doub
         kasus53 = kasus51/kasus52;
     }
     kasus5 = kasus53;
+    int dbtoint1 = int(a);
+    int dbtoint2 = int(b);
+    int dbtoint3 = int(c);
+    int dbtoint4 = int(d);
+    string strks1;
+    string strks2;
+    string strks3;
+    string strks4;
+    string strks5;
+    string angka1 = to_string(dbtoint1);
+    string angka2 = to_string(dbtoint2);
+    string angka3 = to_string(dbtoint3);
+    string angka4 = to_string(dbtoint4);
+    string kss1 = to_string(kasus1);
+    string kss2 = to_string(kasus2);
+    string kss3 = to_string(kasus3);
+    string kss4 = to_string(kasus4);
+    string kss5 = to_string(kasus5);
 
     //Print hasil
-    if(!simpan){
-        if(isSama(kasus1))
-        {
-            cout<<"(("<<a<<oper1<<b<<")"<<oper2<<c<<")"<<oper3<<d<<"="<<kasus1<<endl;//Kasus 1
-            *jmloprs+=1;
-        }
-        if(isSama(kasus2))
-        {
-            cout<<"("<<a<<oper1<<"("<<b<<oper2<<c<<"))"<<oper3<<d<<"="<<kasus2<<endl;//Kasus 2
-            *jmloprs+=1;
-        }
-        if(isSama(kasus3))
-        {
-            cout<<a<<oper1<<"(("<<b<<oper2<<c<<")"<<oper3<<d<<")="<<kasus3<<endl;//Kasus 3
-            *jmloprs+=1;
-        }
-        if(isSama(kasus4))
-        {
-            cout<<a<<oper1<<"("<<b<<oper2<<"("<<c<<oper3<<d<<"))="<<kasus4<<endl;//Kasus 4
-            *jmloprs+=1;
-        }
-        if(isSama(kasus5))
-        {
-            cout<<"("<<a<<oper1<<b<<")"<<oper2<<"("<<c<<oper3<<d<<")="<<kasus5<<endl;//Kasus 5
-            *jmloprs+=1;
-        }
-    }
-    else if(simpan)
+    
+    if(isSama(kasus1))
     {
-        if(isSama(kasus1))
-        {
-            *datafile<<"(("<<a<<oper1<<b<<")"<<oper2<<c<<")"<<oper3<<d<<"="<<kasus1<<endl;//Kasus 1
-        }
-        if(isSama(kasus2))
-        {
-            *datafile<<"("<<a<<oper1<<"("<<b<<oper2<<c<<"))"<<oper3<<d<<"="<<kasus2<<endl;//Kasus 2
-        }
-        if(isSama(kasus3))
-        {
-            *datafile<<a<<oper1<<"(("<<b<<oper2<<c<<")"<<oper3<<d<<")="<<kasus3<<endl;//Kasus 3
-        }
-        if(isSama(kasus4))
-        {
-            *datafile<<a<<oper1<<"("<<b<<oper2<<"("<<c<<oper3<<d<<"))="<<kasus4<<endl;//Kasus 4
-        }
-        if(isSama(kasus5))
-        {
-            *datafile<<"("<<a<<oper1<<b<<")"<<oper2<<"("<<c<<oper3<<d<<")="<<kasus5<<endl;//Kasus 5
-        }
+        strks1 = "(("+angka1+oper1+angka2+")"+oper2+angka3+")"+oper3+angka4;//Kasus 1
+        nyimpenstr->insert(strks1);
+    }
+    if(isSama(kasus2))
+    {
+        strks2 = "("+angka1+oper1+"("+angka2+oper2+angka3+"))"+oper3+angka4;//Kasus 2
+        nyimpenstr->insert(strks2);
+    }
+    if(isSama(kasus3))
+    {
+        strks3 = angka1+oper1+"(("+angka2+oper2+angka3+")"+oper3+angka4+")";//Kasus 3
+        nyimpenstr->insert(strks3);
+    }
+    if(isSama(kasus4))
+    {
+        strks4 = angka1+oper1+"("+angka2+oper2+"("+angka3+oper3+angka4+"))";//Kasus 4
+        nyimpenstr->insert(strks4);
+    }
+    
+    if(isSama(kasus5))
+    {
+        strks5 = "("+angka1+oper1+angka2+")"+oper2+"("+angka3+oper3+angka4+")";//Kasus 5
+        nyimpenstr->insert(strks5);
     }
 }
 
@@ -415,102 +412,237 @@ int main()
     cout<<"--------------------------------"<<endl;
     cout<<"Selamat Datang di Game 24 Solver"<<endl;
     cout<<"--------------------------------"<<endl;
-    char cari[15];
     int i;
-    int count=0;
-    int a[4];//buat menyimpan angka
-    cout<<"Pilih 4 angka atau huruf diantara angka berikut:"<<endl;
-    cout<<"A(dalam game ini bernilai 1)"<<endl<<"Angka 2 - 10"<<endl<<"Q(dalam game ini bernilai 11)"<<endl<<"J(dalam game ini bernilai 12)"<<endl<<"K(dalam game ini bernilai 13)"<<endl;
-    cout<<"Masukkan 4 jenis kartu: ";
-    cin.getline(cari,15);
+    bool benarangka = true;
     bool benar = true;
-    int panjang = strlen(cari);
-    for(i=0;i<panjang;i++)
+    int a[4];//buat menyimpan angka
+    cout<<"Pilih cara mencari solusi(1/2)"<<endl;
+    cout<<"1. Angka random"<<endl;
+    cout<<"2. Memasukkan input"<<endl;
+    cout<<"Pilih:";
+    int pilihpilih;
+    cin>>pilihpilih;
+    if(pilihpilih==2)
     {
-        if(cari[i]=='A')
+        char cari[15];
+        cout<<"Pilih 4 angka atau huruf diantara angka atau huruf berikut:"<<endl;
+        cout<<"A(dalam game ini bernilai 1)"<<endl<<"Angka 2 - 10"<<endl<<"J(dalam game ini bernilai 11)"<<endl;
+        cout<<"Q(dalam game ini bernilai 12)"<<endl<<"K(dalam game ini bernilai 13)"<<endl;
+        cout<<"Masukkan 4 jenis kartu. ";
+        bool benarangka = true;
+        bool benar = true;
+        cin.getline(cari,15);
+        int count=0;
+        int panjang = strlen(cari);
+        for(i=0;i<panjang;i++)
         {
-            a[count] = 1;
-            count+=1;
+            if(cari[i]=='A')
+            {
+                a[count] = 1;
+                count+=1;
+            }
+            else if (cari[i]=='2')
+            {
+                a[count] = 2;
+                count+=1;
+            }
+            else if (cari[i]=='3')
+            {
+                a[count] = 3;
+                count+=1;
+            }
+            else if (cari[i]=='4')
+            {
+                a[count] = 4;
+                count+=1;
+            }
+            else if (cari[i]=='5')
+            {
+                a[count] = 5;
+                count+=1;
+            }
+            else if (cari[i]=='6')
+            {
+                a[count] = 6;
+                count+=1;
+            }
+            else if (cari[i]=='7')
+            {
+                a[count] = 7;
+                count+=1;
+            }
+            else if (cari[i]=='8')
+            {
+                a[count] = 8;
+                count+=1;
+            }
+            else if (cari[i]=='9')
+            {
+                a[count] = 9;
+                count+=1;
+            }
+            else if (cari[i]=='1' && cari[i+1]=='0')
+            {
+                a[count] = 10;
+                count+=1;
+            }
+            else if (cari[i]=='0' && cari[i-1]=='1')
+            {
+                continue;
+            }   
+            else if (cari[i]=='J')
+            {
+                a[count] = 11;
+                count+=1;
+            }
+            else if( cari[i]=='Q')
+            {
+                a[count] = 12;
+                count+=1;
+            }
+            else if(cari[i]=='K')
+            {
+                a[count] = 13;
+                count+=1;
+            }
+            else if(cari[i]==' ' && cari[i-1]!=' ' && cari[i+1]!=' ' )
+            {
+                continue;
+            }
+            else if(cari[i]==' ' && cari[i-1]==' ' || cari[i+1]==' ' )
+            {
+                benar = false;
+            }
+            else
+            {
+                benar = false;
+            }
         }
-        else if (cari[i]=='2')
+        if(count==4 && panjang==7||panjang==8)
         {
-            a[count] = 2;
-            count+=1;
-        }
-        else if (cari[i]=='3')
-        {
-            a[count] = 3;
-            count+=1;
-        }
-        else if (cari[i]=='4')
-        {
-            a[count] = 4;
-            count+=1;
-        }
-        else if (cari[i]=='5')
-        {
-            a[count] = 5;
-            count+=1;
-        }
-        else if (cari[i]=='6')
-        {
-            a[count] = 6;
-            count+=1;
-        }
-        else if (cari[i]=='7')
-        {
-            a[count] = 7;
-            count+=1;
-        }
-        else if (cari[i]=='8')
-        {
-            a[count] = 8;
-            count+=1;
-        }
-        else if (cari[i]=='9')
-        {
-            a[count] = 9;
-            count+=1;
-        }
-        else if (cari[i]=='1' && cari[i+1]=='0')
-        {
-            a[count] = 10;
-            count+=1;
-        }
-        else if (cari[i]=='0' && cari[i-1]=='1')
-        {
-            continue;
-        }
-        else if (cari[i]=='J')
-        {
-            a[count] = 11;
-            count+=1;
-        }
-        else if( cari[i]=='Q')
-        {
-            a[count] = 12;
-            count+=1;
-        }
-        else if(cari[i]=='K')
-        {
-            a[count] = 13;
-            count+=1;
-        }
-        else if(cari[i]==' ' && cari[i-1]!=' ' && cari[i+1]!=' ' )
-        {
-            continue;
-        }
-        else if(cari[i]==' ' && cari[i-1]==' ' || cari[i+1]==' ' )
-        {
-            benar = false;
+            benarangka = true;
         }
         else
         {
-            benar = false;
+            benarangka = false;
+        }
+        while(!benar || !benarangka)
+        {
+        count=0;
+        cout<<"Tolong masukkan input yang benar"<<endl;
+        cout<<"Contoh input: 7 8 9 2"<<endl;
+        cout<<"Masukkan 4 jenis kartu: ";
+        cin.getline(cari,15);
+        benar = true;
+        int panjang = strlen(cari);
+        for(i=0;i<panjang;i++)
+        {  
+            if(cari[i]=='A')
+            {
+                a[count] = 1;
+                count+=1;
+            }
+            else if (cari[i]=='2')
+            {
+                a[count] = 2;
+                count+=1;
+            }
+            else if (cari[i]=='3')
+            {
+                a[count] = 3;
+                count+=1;
+            }
+            else if (cari[i]=='4')
+            {
+                a[count] = 4;
+                count+=1;
+            }
+            else if (cari[i]=='5')
+            {   
+                a[count] = 5;
+                count+=1;
+            }
+            else if (cari[i]=='6')
+            {
+                a[count] = 6;
+                count+=1;
+            }
+            else if (cari[i]=='7')
+            {
+                a[count] = 7;
+                count+=1;
+            }
+            else if (cari[i]=='8')
+            {
+                a[count] = 8;
+                count+=1;
+            }
+            else if (cari[i]=='9')
+            {
+                a[count] = 9;
+                count+=1;
+            }
+            else if (cari[i]=='1' && cari[i+1]=='0')
+            {
+                a[count] = 10;
+                count+=1;
+            }
+            else if (cari[i]=='0' && cari[i-1]=='1')
+            {
+                continue;
+            }
+            else if (cari[i]=='J')
+            {
+                a[count] = 11;
+                count+=1;
+            }
+            else if( cari[i]=='Q')
+            {
+                a[count] = 12;
+                count+=1;
+            }
+            else if(cari[i]=='K')
+            {
+                a[count] = 13;
+                count+=1;
+            }
+            else if(cari[i]==' ' && cari[i-1]!=' ' && cari[i+1]!=' ' )
+            {
+                continue;
+            }
+            else if(cari[i]==' ' && cari[i-1]==' ' || cari[i+1]==' ' )
+            {
+                benar = false;
+            }
+            else
+            {
+                benar = false;
+            }
+        }
+        if(count==4 && panjang==7||panjang==8)
+        {
+            benarangka = true;
+        }
+        else
+        {
+            benarangka = false;
+        }
         }
     }
-    if(benar && count==4 && panjang==7 || panjang==8)
+    else if(pilihpilih==1)
     {
+        cout<<"Angka yang didapat:"<<endl;
+        cout<<endl;
+        int i = 0;
+        srand(time(NULL));
+        for(i;i<4;i++)
+        {
+            a[i] = 1+(rand()%13);
+            cout<<a[i]<<" ";
+        }
+    }
+    cout<<endl;
+        set<string> buatnyimpenstr;
         ofstream buang;
         clock_t start, end;
         start=clock();
@@ -538,7 +670,7 @@ int main()
                                 {
                                     if(j!=k && j!=l && j!=m && k!=l && k!=m && l!=m)
                                     {
-                                        hitung_hitung(a[j],x,a[k],y,a[l],z,a[m],false,&jml,&buang);
+                                        hitung_hitung(a[j],x,a[k],y,a[l],z,a[m],&buatnyimpenstr,&buang);
                                     }
                                 }
                             }
@@ -548,6 +680,7 @@ int main()
             }
         }
         buang.close();
+        jml = buatnyimpenstr.size();
         if(jml==0)
         {
             cout<<"Tidak ada solusi"<<endl;
@@ -555,6 +688,9 @@ int main()
         else
         {
             cout<<"Jumlah solusi="<<jml<<endl;
+            for (auto& it : buatnyimpenstr) {
+                cout << it <<endl;
+            }
         }
         end = clock();
         double waktu = double(end-start)/double(CLOCKS_PER_SEC);
@@ -577,30 +713,8 @@ int main()
             else
             {
             simpanfile<<"Berikut "<<jml<<" solusi yang tersedia:"<<endl;
-            for (j=0;j<4;j++)
-            {
-            for (k=0;k<4;k++)
-            {
-                for (l=0;l<4;l++)
-                {
-                    for (m=0;m<4;m++)
-                    {
-                        for (x=0;x<4;x++)
-                        {
-                            for (y=0;y<4;y++)
-                            {
-                                for (z=0;z<4;z++)
-                                {
-                                    if(j!=k && j!=l && j!=m && k!=l && k!=m && l!=m)
-                                    {
-                                        hitung_hitung(a[j],x,a[k],y,a[l],z,a[m],true,&jml,&simpanfile);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            for (auto& it : buatnyimpenstr) {
+                simpanfile << it <<endl;
             }
             simpanfile.close();
             cout<<"File berhasil disimpan. Game telah berakhir";
@@ -610,9 +724,5 @@ int main()
         {
             cout<<endl<<"Oke, hasil solusi tidak disimpan. Game telah berakhir";
         }
-    }
-    else
-    {
-        cout<<"Input tidak benar. Game tidak dapat diselesaikan";
-    }
+    
 }
